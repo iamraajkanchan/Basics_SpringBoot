@@ -1,14 +1,24 @@
 package com.chinkyfamily.demo.Basics_SpringBoot.users;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "/api/users")
 public class UserController {
-    @GetMapping("/users")
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping
     List<User> getUsers() {
-        return List.of(new User("Raj K", 24));
+        return userService.getUsers();
     }
 }
