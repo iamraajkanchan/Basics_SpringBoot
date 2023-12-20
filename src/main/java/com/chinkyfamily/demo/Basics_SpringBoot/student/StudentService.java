@@ -3,8 +3,8 @@ package com.chinkyfamily.demo.Basics_SpringBoot.student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -20,6 +20,10 @@ public class StudentService {
     }
 
     public void addNewStudent(Student student) {
+        Optional<Student> studentByEmail = studentRepository.findStudentByEmail(student.getEmail());
+        if (studentByEmail.isPresent()) {
+            throw new IllegalStateException("Student with this email address is already registered!");
+        }
         studentRepository.save(student);
     }
 }
