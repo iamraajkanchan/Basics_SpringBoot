@@ -1,6 +1,6 @@
 First hand on Spring Boot, hoping to complete the tutorial ASAP.
 
-<h2>$${\color{red}<b>Annotations Learnt}$$</b>:</h3>
+$${\color{red}<h2><b>Annotations Learnt:</b></h2>}$$
 <br>
 <br> <b>@SpringBootApplication</b> :- Use if for the Class that holds the main method.
 <br> <b>@RestController</b> :- Use it for Controller Class.
