@@ -26,4 +26,13 @@ public class StudentService {
         }
         studentRepository.save(student);
     }
+
+    void deleteStudent(String email) {
+        Optional<Student> studentByEmail = studentRepository.findStudentByEmail(email);
+        if (studentByEmail.isPresent()) {
+            studentRepository.delete(studentByEmail.get());
+        } else {
+            throw new IllegalArgumentException("Email address: " + email + " is not found in the directory!");
+        }
+    }
 }
