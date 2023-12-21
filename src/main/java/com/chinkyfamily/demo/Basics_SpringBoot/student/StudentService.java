@@ -1,9 +1,11 @@
 package com.chinkyfamily.demo.Basics_SpringBoot.student;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -33,6 +35,18 @@ public class StudentService {
             studentRepository.delete(studentByEmail.get());
         } else {
             throw new IllegalArgumentException("Email address: " + email + " is not found in the directory!");
+        }
+    }
+
+    @Transactional
+    void updateStudent(Map<String, String> query) {
+        String oldEmail = query.get("oldEmail");
+        Optional<Student> studentByEmail = studentRepository.findStudentByEmail(oldEmail);
+        if (studentByEmail.isPresent()) {
+            studentByEmail.get().setName(query.get("name"));
+            studentByEmail.get().setEmail(query.get("newEmail"));
+        } else {
+            throw new IllegalArgumentException("Email address: " + oldEmail + " is not found in the directory!");
         }
     }
 }
