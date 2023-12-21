@@ -24,27 +24,27 @@ public class StudentController {
     /**
      * Set Content-type: application/json
      * Set Body: raw with JSON
-     * */
+     */
     @PostMapping
-    public void registerStudent(@RequestBody Student student) {
-        studentService.addNewStudent(student);
+    public String registerStudent(@RequestBody Student student) {
+        return studentService.addNewStudent(student);
     }
 
     /**
      * Set Content-type: application/text
      * Set Body: raw with Text
-     * */
+     */
     @DeleteMapping
-    public void deleteStudent(@RequestBody String email) {
-        studentService.deleteStudent(email);
+    public String deleteStudent(@RequestBody String email) {
+        return studentService.deleteStudent(email);
     }
 
     /**
      * Set Content-type: application/json
      * Set Body: raw with JSON
-     * */
+     */
     @PutMapping
-    public void updateStudent(@RequestBody Map<String, String> query) {
-        studentService.updateStudent(query);
+    public String updateStudent(@RequestBody Map<String, String> query) {
+        return studentService.updateStudent(query);
     }
 }
