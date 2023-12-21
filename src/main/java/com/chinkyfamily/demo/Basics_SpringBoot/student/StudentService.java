@@ -2,6 +2,8 @@ package com.chinkyfamily.demo.Basics_SpringBoot.student;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,35 +23,35 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public String addNewStudent(Student student) {
+    public ResponseEntity<Student> addNewStudent(Student student) {
         Optional<Student> studentByEmail = studentRepository.findStudentByEmail(student.getEmail());
         if (studentByEmail.isPresent()) {
             throw new IllegalStateException(student.getEmail() + " is already registered!");
         }
         studentRepository.save(student);
-        return student.getEmail() + " is registered successfully";
+        return new ResponseEntity<>(student, HttpStatus.CREATED);
     }
 
-    public String deleteStudent(String email) {
+    public ResponseEntity<String> deleteStudent(String email) {
         Optional<Student> studentByEmail = studentRepository.findStudentByEmail(email);
         if (studentByEmail.isPresent()) {
             studentRepository.delete(studentByEmail.get());
-            return "Record of " + studentByEmail.get().getEmail() + " is deleted successfully!";
+            return new ResponseEntity<>("Record of " + studentByEmail.get().getEmail() + " is deleted successfully!", HttpStatus.ACCEPTED);
         } else {
-            throw new IllegalArgumentException("Email address: " + email + " is not found in the directory!");
+            return new ResponseEntity<>("Email address: " + email + " is not found in the directory!", HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @Transactional
-    String updateStudent(Map<String, String> query) {
+    ResponseEntity<String> updateStudent(Map<String, String> query) {
         String oldEmail = query.get("oldEmail");
         Optional<Student> studentByEmail = studentRepository.findStudentByEmail(oldEmail);
         if (studentByEmail.isPresent()) {
             studentByEmail.get().setName(query.get("name"));
             studentByEmail.get().setEmail(query.get("newEmail"));
-            return "Record of " + oldEmail + " is updated successfully";
+            return new ResponseEntity<>("Record of " + oldEmail + " is updated successfully", HttpStatus.ACCEPTED);
         } else {
-            throw new IllegalArgumentException("Email address: " + oldEmail + " is not found in the directory!");
+            return new ResponseEntity<>("Email address: " + oldEmail + " is not found in the directory!", HttpStatus.NOT_ACCEPTABLE);
         }
     }
 }
